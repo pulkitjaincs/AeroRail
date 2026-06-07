@@ -6,3 +6,19 @@ ENGINEERING_ROADMAP.md
 
 .serena/
 MONTH_1_ROADMAP.md
+
+# Dependency directories
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

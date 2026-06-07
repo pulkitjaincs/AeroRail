@@ -1,0 +1,12 @@
+{
+  "name": "aerorail",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter \"*\" --parallel dev",
+    "setup:infra": "pnpm --filter web setup:infra"
+  }
+}

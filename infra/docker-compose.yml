@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Kong (API Gateway) - Acts as the entrypoint for local services
+  kong:
+    image: kong:latest
+    container_name: aerorail-kong
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl, 0.0.0.0:8002 http2
+    ports:
+      - "8000:8000" # Public API Traffic
+      - "8001:8001" # Admin API (Local only)
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    networks:
+      - aerorail-network
+
+networks:
+  aerorail-network:
+    driver: bridge
