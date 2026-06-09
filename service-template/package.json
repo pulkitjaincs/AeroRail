@@ -1,0 +1,25 @@
+{
+    "name": "@aerorail/service-template",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "NODE_ENV=development tsx watch src/index.ts",
+        "build": "tsc",
+        "start": "NODE_ENV=production node dist/index.js"
+    },
+    "dependencies": {
+        "@aerorail/errors": "workspace:*",
+        "@aerorail/logger": "workspace:*",
+        "@aerorail/middleware": "workspace:*",
+        "@aerorail/types": "workspace:*",
+        "express": "^4.20.0 || ^5.0.0-beta.1",
+        "zod": "^3.22.0",
+        "dotenv": "^16.4.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0",
+        "@types/express": "^5.0.0",
+        "tsx": "^4.7.0"
+    }
+}
