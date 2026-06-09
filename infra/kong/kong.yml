@@ -1,4 +1,13 @@
 _format_version: "3.0"
 _transform: true
 
-services: []
+services:
+  - name: service-template
+    url: http://service-template:3000
+    routes:
+      - name: service-template-health
+        paths:
+          - /health
+      - name: service-template-root
+        paths:
+          - /service-template

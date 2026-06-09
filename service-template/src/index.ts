@@ -1,12 +1,13 @@
+import './config/env.js'; // Load env variables first
+import { initTracing } from './otel.js';
+// Initialize tracing before any other setup
+initTracing('service-template');
+
 import express from 'express';
 import { env } from './config/env.js';
 import { logger } from '@aerorail/logger';
 import { requestId, requestLogger, errorHandler } from '@aerorail/middleware';
-import { initTracing } from './otel.js';
 import { Server } from 'http';
-
-// Initialize tracing before any other setup
-initTracing('service-template');
 
 const app = express();
 

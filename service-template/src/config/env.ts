@@ -17,4 +17,8 @@ if (!parsed.success) {
   process.exit(1);
 }
 
+// Write back default values to process.env so that shared packages (like logger) can read them correctly.
+process.env.NODE_ENV = parsed.data.NODE_ENV;
+process.env.LOG_LEVEL = parsed.data.LOG_LEVEL;
+
 export const env = parsed.data;

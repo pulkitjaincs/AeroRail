@@ -7,6 +7,6 @@
   },
   "scripts": {
     "dev": "pnpm --filter \"*\" --parallel dev",
-    "setup:infra": "pnpm --filter web setup:infra"
+    "setup:infra": "docker compose -f infra/docker-compose.yml up -d"
   }
 }

@@ -65,6 +65,7 @@ export interface Coach {
 }
 
 export interface Berth {
+  berthId: string;
   coachId: string;
   berthNumber: number;
   berthPosition: string; // e.g., "LOWER", "UPPER", "SIDE_LOWER"

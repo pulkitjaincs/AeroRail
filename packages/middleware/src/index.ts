@@ -5,7 +5,10 @@ import crypto from 'crypto';
 
 // 1. Request ID Injection Middleware
 export const requestId = (req: Request, res: Response, next: NextFunction) => {
-    const reqId = req.headers['x-request-id'] || crypto.randomUUID();
+    const rawReqId = req.headers['x-request-id'];
+    const reqId = Array.isArray(rawReqId)
+        ? rawReqId[0]
+        : (rawReqId || crypto.randomUUID());
     req.headers['x-request-id'] = reqId;
     res.setHeader('x-request-id', reqId);
     next();
