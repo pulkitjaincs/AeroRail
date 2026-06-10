@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model berths {
+  berth_id        String         @id
+  coach_id        String
+  berth_number    Int
+  berth_position  String
+  has_window      Boolean        @default(false)
+  has_charging    Boolean        @default(false)
+  is_ladies_quota Boolean        @default(false)
+  coaches         coaches        @relation(fields: [coach_id], references: [coach_id])
+  booking_legs    booking_legs[]
+}
+
+model booking_legs {
+  leg_id                                         String     @id
+  booking_id                                     String
+  leg_sequence                                   Int
+  train_id                                       String
+  origin_station                                 String
+  dest_station                                   String
+  departure_dt                                   DateTime
+  arrival_dt                                     DateTime
+  berth_id                                       String?
+  passenger_id                                   String
+  seat_status                                    String
+  wl_position                                    Int?
+  fare                                           Decimal
+  berths                                         berths?    @relation(fields: [berth_id], references: [berth_id])
+  bookings                                       bookings   @relation(fields: [booking_id], references: [booking_id])
+  stations_booking_legs_dest_stationTostations   stations   @relation("booking_legs_dest_stationTostations", fields: [dest_station], references: [station_code])
+  stations_booking_legs_origin_stationTostations stations   @relation("booking_legs_origin_stationTostations", fields: [origin_station], references: [station_code])
+  passengers                                     passengers @relation(fields: [passenger_id], references: [passenger_id])
+  trains                                         trains     @relation(fields: [train_id], references: [train_id])
+}
+
+model bookings {
+  booking_id      String         @id
+  pnr             String         @unique
+  user_id         String
+  journey_type    String
+  quota_type      String
+  status          String         @default("PENDING")
+  total_fare      Decimal
+  idempotency_key String?        @unique
+  created_at      DateTime       @default(now())
+  updated_at      DateTime
+  booking_legs    booking_legs[]
+  users           users          @relation(fields: [user_id], references: [user_id])
+  payments        payments[]
+}
+
+model coaches {
+  coach_id     String   @id
+  train_id     String
+  coach_number String
+  coach_type   String
+  total_berths Int
+  berths       berths[]
+  trains       trains   @relation(fields: [train_id], references: [train_id])
+}
+
+model passengers {
+  passenger_id String         @id
+  first_name   String
+  last_name    String
+  age          Int
+  gender       String
+  booking_legs booking_legs[]
+}
+
+model payments {
+  payment_id     String   @id
+  booking_id     String
+  amount         Decimal
+  currency       String   @default("INR")
+  status         String   @default("PENDING")
+  provider       String?
+  provider_tx_id String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime
+  bookings       bookings @relation(fields: [booking_id], references: [booking_id])
+}
+
+model refresh_tokens {
+  id         String   @id
+  token_hash String   @unique
+  user_id    String
+  expires_at DateTime
+  revoked    Boolean  @default(false)
+  created_at DateTime @default(now())
+  users      users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+}
+
+model schedule_stops {
+  stop_id        String   @id
+  train_id       String
+  station_code   String
+  sequence_no    Int
+  arrival_time   String?
+  departure_time String?
+  day_offset     Int      @default(0)
+  distance_km    Decimal
+  stations       stations @relation(fields: [station_code], references: [station_code])
+  trains         trains   @relation(fields: [train_id], references: [train_id])
+
+  @@unique([train_id, sequence_no])
+}
+
+model stations {
+  station_code                                       String           @id
+  station_name                                       String
+  city                                               String
+  state                                              String
+  lat                                                Decimal?
+  lng                                                Decimal?
+  timezone                                           String           @default("Asia/Kolkata")
+  booking_legs_booking_legs_dest_stationTostations   booking_legs[]   @relation("booking_legs_dest_stationTostations")
+  booking_legs_booking_legs_origin_stationTostations booking_legs[]   @relation("booking_legs_origin_stationTostations")
+  schedule_stops                                     schedule_stops[]
+}
+
+model trains {
+  train_id       String           @id
+  train_number   String           @unique
+  train_name     String
+  train_type     String?
+  operator       String?
+  booking_legs   booking_legs[]
+  coaches        coaches[]
+  schedule_stops schedule_stops[]
+}
+
+model users {
+  user_id        String           @id
+  email          String           @unique
+  password_hash  String
+  first_name     String?
+  last_name      String?
+  role           String           @default("USER")
+  created_at     DateTime         @default(now())
+  updated_at     DateTime
+  bookings       bookings[]
+  refresh_tokens refresh_tokens[]
+}
