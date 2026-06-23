@@ -13,8 +13,10 @@ The codebase is organized as follows:
 ```
 aerorail/
 ├── apps/                    # Front-end applications and Gateways (Next.js, API-Gateway)
+│   └── web/                 # Next.js 15 PWA Client Search application
 ├── services/                # Core backend microservices
-│   └── auth-service/        # JWT Authentication Service (Neon DB, Redis Cloud)
+│   ├── auth-service/        # JWT Authentication Service (Neon DB, Redis Cloud)
+│   └── search-service/      # Search and Routing Service (Neo4j Graph Database, Redis Cache)
 ├── service-template/        # Standard boilerplate template for creating new services
 ├── packages/                # Shared packages consumed by services
 │   ├── errors/              # Uniform HTTP error classes
@@ -81,17 +83,13 @@ To run all applications and templates in parallel in development mode:
 ```bash
 pnpm dev
 ```
-To run the Auth Service individually:
+To seed the databases (Neo4j and PostgreSQL) with train schedules:
 ```bash
-pnpm --filter @aerorail/auth-service dev
+pnpm --filter @aerorail/search-service run seed
 ```
-To run only the service template:
-```bash
-pnpm --filter @aerorail/service-template dev
-```
+To run services individually:
+*   **Auth Service:** `pnpm --filter @aerorail/auth-service dev`
+*   **Search Service:** `pnpm --filter @aerorail/search-service dev`
+*   **Next.js Web Frontend:** `pnpm --filter web dev`
 
 ---
-
-## 📋 Roadmap Progress
-
-Refer to `MONTH_1_ROADMAP.md` for detailed weekly deliverables. Currently, **Week 1**, **Week 2**, and **Week 3** have been successfully implemented, establishing a production-ready monorepo framework, shared packages, and the JWT Authentication Service with Redis token rotation and blacklisting.

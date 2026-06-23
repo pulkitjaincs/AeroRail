@@ -26,6 +26,14 @@ services:
               claims_to_verify:
                 - exp
 
+  # 3. Search Service (Public paths)
+  - name: search-service
+    url: http://host.docker.internal:3002
+    routes:
+      - name: search-route
+        paths:
+          - /search
+
 consumers:
   # 3. Create consumer credentials matching our token issuer
   - username: aerorail-user
