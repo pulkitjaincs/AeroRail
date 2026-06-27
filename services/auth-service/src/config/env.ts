@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
+// Load root .env file since it holds common configurations
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
 dotenv.config();
 
 const envSchema = z.object({
