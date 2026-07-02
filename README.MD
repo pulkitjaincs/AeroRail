@@ -6,10 +6,8 @@ This repository utilizes **pnpm workspaces** for package management, **Express 5
 
 ---
 
-## 🚀 Current Project Status
+## ✨ Key Features
 
-**Phase 1 (Foundations, Auth, & Search) is fully complete!**
-The underlying monorepo infrastructure has been battle-tested and finalized. The system currently features:
 - **API Gateway (Kong)**: Centralized routing and high-performance RS256 JWT validation.
 - **Auth Service**: Secure registration/login flows with refresh token rotation and Redis blacklisting.
 - **Search Service**: High-speed train routing via **Neo4j** graph queries, fully parallelized availability checks, and Redis caching to prevent N+1 query bottlenecks.
