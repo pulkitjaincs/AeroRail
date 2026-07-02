@@ -1,6 +1,6 @@
 import { driver } from '../config/neo4j.js';
-import { redis } from '../config/redis.js';
-import { prisma } from '../config/db.js';
+import { redis } from '@aerorail/redis';
+import { prisma } from '@aerorail/db';
 import { logger } from '@aerorail/logger';
 import neo4j from 'neo4j-driver';
 export interface SearchResult {
@@ -102,11 +102,8 @@ export class SearchService {
                 const arrMinutes = arrH * 60 + arrM + dayOffset * 24 * 60;
                 const durationMinutes = arrMinutes - depMinutes;
 
-                const availability: Record<string, number> = {};
                 const classesToFetch = classCode ? [classCode] : classes;
-                for (const cl of classesToFetch) {
-                    availability[cl] = await this.getAvailability(trainNumber, cl, dateStr);
-                }
+
                 searchResults.push({
                     trainNumber,
                     trainName,
@@ -118,9 +115,22 @@ export class SearchService {
                     destStation: to,
                     distanceKm: Math.round(distanceKm * 100) / 100,
                     classes: classesToFetch,
-                    availability,
+                    availability: {},
                 });
             }
+
+            const availPromises = [];
+            for (const res of searchResults) {
+                for (const cl of res.classes) {
+                    availPromises.push(
+                        this.getAvailability(res.trainNumber, cl, dateStr).then(avail => {
+                            res.availability[cl] = avail;
+                        })
+                    );
+                }
+            }
+            await Promise.all(availPromises);
+
             await redis.setex(cacheKey, 600, JSON.stringify(searchResults));
             return searchResults;
         } finally {

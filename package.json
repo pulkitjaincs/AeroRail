@@ -8,5 +8,9 @@
   "scripts": {
     "dev": "pnpm --filter \"*\" --parallel dev",
     "setup:infra": "docker compose -f infra/docker-compose.yml up -d"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6"
   }
 }

@@ -10,9 +10,12 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "@aerorail/db": "workspace:*",
     "@aerorail/errors": "workspace:*",
     "@aerorail/logger": "workspace:*",
     "@aerorail/middleware": "workspace:*",
+    "@aerorail/redis": "workspace:*",
+    "@aerorail/server": "workspace:*",
     "@aerorail/types": "workspace:*",
     "@prisma/client": "^5.12.0",
     "bcryptjs": "^2.4.3",

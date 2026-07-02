@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import { prisma } from '../config/db.js';
-import { redis } from '../config/redis.js';
+import { prisma } from '@aerorail/db';
+import { redis } from '@aerorail/redis';
 import { hashPassword, comparePassword } from '../utils/password.js';
 import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils/jwt.js';
 import { BadRequestError, UnauthorizedError, ConflictError } from '@aerorail/errors';
@@ -12,30 +12,30 @@ export class AuthService {
     }
 
     static async register(email: string, password: string, firstName?: string, lastName?: string) {
-        const existingUser = await prisma.users.findUnique({
-            where: { email },
-        });
-
-        if (existingUser) {
-            throw new ConflictError('Email already in use');
-        }
-
         const hashedPassword = await hashPassword(password);
         const userId = crypto.randomUUID();
         const now = new Date();
 
-        const user = await prisma.users.create({
-            data: {
-                user_id: userId,
-                email,
-                password_hash: hashedPassword,
-                first_name: firstName || null,
-                last_name: lastName || null,
-                role: 'USER',
-                created_at: now,
-                updated_at: now,
-            },
-        });
+        let user;
+        try {
+            user = await prisma.users.create({
+                data: {
+                    user_id: userId,
+                    email,
+                    password_hash: hashedPassword,
+                    first_name: firstName || null,
+                    last_name: lastName || null,
+                    role: 'USER',
+                    created_at: now,
+                    updated_at: now,
+                },
+            });
+        } catch (error: any) {
+            if (error.code === 'P2002') {
+                throw new ConflictError('Email already in use');
+            }
+            throw error;
+        }
 
         const payload: JWTPayload = {
             userId: user.user_id,

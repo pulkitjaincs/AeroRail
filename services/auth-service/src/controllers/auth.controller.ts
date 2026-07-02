@@ -5,7 +5,7 @@ import { BadRequestError } from '@aerorail/errors';
 
 const registerSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string().min(8).regex(/^(?=.*[A-Z])(?=.*\d).+$/, 'Password must contain at least one uppercase letter and one number'),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
 });
