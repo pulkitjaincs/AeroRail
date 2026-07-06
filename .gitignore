@@ -3,9 +3,8 @@ DESIGN_DOC.md
 PRD.md
 SYSTEM_DESIGN_DOC.md
 ENGINEERING_ROADMAP.md
-
+MONTH_2_ROADMAP.md
 .serena/
-MONTH_1_ROADMAP.md
 
 # Dependency directories
 node_modules/

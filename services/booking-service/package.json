@@ -1,0 +1,28 @@
+{
+    "name": "@aerorail/booking-service",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
+        "build": "tsc",
+        "start": "cross-env NODE_ENV=production node dist/index.js"
+    },
+    "dependencies": {
+        "@aerorail/db": "workspace:*",
+        "@aerorail/errors": "workspace:*",
+        "@aerorail/logger": "workspace:*",
+        "@aerorail/middleware": "workspace:*",
+        "@aerorail/server": "workspace:*",
+        "@aerorail/types": "workspace:*",
+        "dotenv": "^16.4.0",
+        "express": "^4.20.0 || ^5.0.0-beta.1",
+        "zod": "^3.22.0"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/node": "^20.0.0",
+        "cross-env": "^10.1.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.0.0"
+    }
+}

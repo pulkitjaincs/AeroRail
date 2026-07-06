@@ -284,6 +284,52 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  services/booking-service:
+    dependencies:
+      '@aerorail/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@aerorail/errors':
+        specifier: workspace:*
+        version: link:../../packages/errors
+      '@aerorail/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+      '@aerorail/middleware':
+        specifier: workspace:*
+        version: link:../../packages/middleware
+      '@aerorail/server':
+        specifier: workspace:*
+        version: link:../../packages/server
+      '@aerorail/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      dotenv:
+        specifier: ^16.4.0
+        version: 16.6.1
+      express:
+        specifier: ^4.20.0 || ^5.0.0-beta.1
+        version: 5.2.1
+      zod:
+        specifier: ^3.22.0
+        version: 3.25.76
+    devDependencies:
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.6
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.42
+      cross-env:
+        specifier: ^10.1.0
+        version: 10.1.0
+      tsx:
+        specifier: ^4.7.0
+        version: 4.22.4
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   services/search-service:
     dependencies:
       '@aerorail/db':

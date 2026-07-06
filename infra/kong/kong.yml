@@ -34,6 +34,14 @@ services:
         paths:
           - /search
 
+  # 4. Booking Service (Public paths for availability, protected for booking later)
+  - name: booking-service
+    url: http://host.docker.internal:3003
+    routes:
+      - name: booking-route
+        paths:
+          - /booking
+
 consumers:
   # 3. Create consumer credentials matching our token issuer
   - username: aerorail-user
