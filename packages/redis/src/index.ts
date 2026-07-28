@@ -1,4 +1,5 @@
 import { Redis } from 'ioredis';
+import Redlock from 'redlock';
 import { logger } from '@aerorail/logger';
 
 export const redis = process.env.REDIS_URL
@@ -17,4 +18,11 @@ redis.on('connect', () => {
 
 redis.on('error', (err) => {
   logger.error({ err }, '❌ Redis connection error');
+});
+
+export const redlock = new Redlock([redis], {
+  driftFactor: 0.01,
+  retryCount: 10,
+  retryDelay: 200,
+  retryJitter: 200,
 });

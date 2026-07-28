@@ -7,6 +7,8 @@ import { env } from './config/env.js';
 import { startServer } from '@aerorail/server';
 
 import availabilityRouter from './routes/availability.js';
+import bookRouter from './routes/book.js';
+import queueRouter from './routes/queue.js';
 
 startServer({
   serviceName: 'booking-service',
@@ -17,6 +19,8 @@ startServer({
     });
     
     app.use('/booking', availabilityRouter);
+    app.use('/booking/book', bookRouter);
+    app.use('/booking/queue', queueRouter);
   },
   shutdownHandlers: [
     // Add graceful shutdown callbacks for DBs or custom services here

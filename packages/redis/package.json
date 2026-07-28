@@ -7,11 +7,13 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@aerorail/logger": "workspace:*",
+    "@types/redlock": "^4.0.8",
     "ioredis": "^5.4.0",
-    "@aerorail/logger": "workspace:*"
+    "redlock": "5.0.0-beta.2"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
 }
