@@ -28,7 +28,7 @@ export const idempotencyMiddleware = async (req: Request, res: Response, next: N
       };
       
       redis.setex(`idempotency:${idempotencyKey}`, 86400, JSON.stringify(responseData))
-        .catch(err => logger.error({ err }, 'Failed to save idempotency key to Redis'));
+        .catch((err: any) => logger.error({ err }, 'Failed to save idempotency key to Redis'));
 
       return originalJson(body);
     };

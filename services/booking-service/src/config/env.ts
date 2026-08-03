@@ -8,6 +8,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   LOG_LEVEL: z.string().default('info'),
   DATABASE_URL: z.string().url().optional(), // Optional for the base template
+  KAFKA_BROKERS: z.string().default('localhost:9092'),
 });
 
 const parsed = envSchema.safeParse(process.env);

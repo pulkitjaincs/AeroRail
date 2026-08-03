@@ -9,8 +9,16 @@ import { startServer } from '@aerorail/server';
 import availabilityRouter from './routes/availability.js';
 import bookRouter from './routes/book.js';
 import queueRouter from './routes/queue.js';
+import { KafkaClient } from '@aerorail/kafka';
+import { handlePaymentCompleted } from './consumers/paymentConsumer.js';
 
-startServer({
+const kafkaClient = new KafkaClient('booking-service', env.KAFKA_BROKERS.split(','));
+
+async function init() {
+  await kafkaClient.connectConsumer();
+  await kafkaClient.consume('payment.completed', handlePaymentCompleted);
+
+  startServer({
   serviceName: 'booking-service',
   port: env.PORT || 3003,
   routes: (app) => {
@@ -23,6 +31,11 @@ startServer({
     app.use('/booking/queue', queueRouter);
   },
   shutdownHandlers: [
-    // Add graceful shutdown callbacks for DBs or custom services here
+    async () => {
+      await kafkaClient.disconnect();
+    }
   ],
 });
+}
+
+init().catch(console.error);

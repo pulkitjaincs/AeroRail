@@ -10,8 +10,10 @@
     "dependencies": {
         "@aerorail/db": "workspace:*",
         "@aerorail/errors": "workspace:*",
+        "@aerorail/kafka": "workspace:*",
         "@aerorail/logger": "workspace:*",
         "@aerorail/middleware": "workspace:*",
+        "@aerorail/redis": "workspace:*",
         "@aerorail/server": "workspace:*",
         "@aerorail/types": "workspace:*",
         "dotenv": "^16.4.0",

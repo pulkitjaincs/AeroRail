@@ -42,6 +42,14 @@ services:
         paths:
           - /booking
 
+  # 5. Payment Service
+  - name: payment-service
+    url: http://host.docker.internal:3004
+    routes:
+      - name: payment-route
+        paths:
+          - /payment
+
 consumers:
   # 3. Create consumer credentials matching our token issuer
   - username: aerorail-user

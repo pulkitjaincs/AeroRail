@@ -11,8 +11,11 @@ This repository utilizes **pnpm workspaces** for package management, **Express 5
 - **API Gateway (Kong)**: Centralized routing and high-performance RS256 JWT validation.
 - **Auth Service**: Secure registration/login flows with refresh token rotation and Redis blacklisting.
 - **Search Service**: High-speed train routing via **Neo4j** graph queries, fully parallelized availability checks, and Redis caching to prevent N+1 query bottlenecks.
-- **Next.js PWA Frontend**: A visually stunning, mobile-responsive web client with offline service workers and dynamic data fetching.
-- **Monorepo Boilerplate**: Production-ready shared packages (`@aerorail/server`, `@aerorail/db`, etc.) providing built-in rate limiting, security headers (`helmet`), standardized error handling, and graceful shutdown out of the box.
+- **Booking Service**: High-concurrency Tatkal booking engine with Redis distributed locks (Redlock) and row-level database locking to prevent double bookings.
+- **Payment Service**: Mock payment gateway integration (Razorpay) with idempotent webhooks and event-driven booking confirmations.
+- **Event-Driven Architecture**: Uses **Kafka** (via KRaft) to decouple services and process asynchronous events like `payment.completed`.
+- **Next.js PWA Frontend**: A visually stunning, mobile-responsive web client with offline service workers, dynamic data fetching, interactive seat map selection, and Razorpay Checkout UI.
+- **Monorepo Boilerplate**: Production-ready shared packages (`@aerorail/server`, `@aerorail/db`, `@aerorail/kafka`, etc.) providing built-in rate limiting, security headers (`helmet`), standardized error handling, and graceful shutdown out of the box.
 
 ---
 
@@ -26,12 +29,17 @@ aerorail/
 │   └── web/                 # Next.js 15 PWA Client Search application
 ├── services/                # Core backend microservices
 │   ├── auth-service/        # JWT Authentication Service (Neon DB, Redis Cloud)
-│   └── search-service/      # Search and Routing Service (Neo4j Graph Database, Redis Cache)
+│   ├── search-service/      # Search and Routing Service (Neo4j Graph Database, Redis Cache)
+│   ├── booking-service/     # Core Booking & Tatkal Concurrency Engine
+│   └── payment-service/     # Payment Processing & Razorpay Webhooks
 ├── service-template/        # Standard boilerplate template for creating new services
 ├── packages/                # Shared packages consumed by services
+│   ├── db/                  # Shared Prisma client instance
 │   ├── errors/              # Uniform HTTP error classes
+│   ├── kafka/               # KafkaJS wrappers for Producers & Consumers
 │   ├── logger/              # Shared Pino JSON logger configuration
 │   ├── middleware/          # Common Express middlewares (Request ID, Logging, Errors)
+│   ├── redis/               # Shared Redis client wrapper
 │   └── types/               # Type definitions introspected from database schema
 ├── infra/                   # Local infrastructure orchestrators (Docker Compose, Kong)
 ├── docs/                    # Architecture Decision Records (ADRs) & documentation
